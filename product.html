@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VELFONT OFFICE — All Collections</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
+<title>VELFONT OFFICE — Product</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -42,7 +41,7 @@
           </ul>
         </li>
         <li><a href="#">Accessories</a></li>
-        <li><a href="index.html" class="active">All</a></li>
+        <li><a href="index.html">All</a></li>
       </ul>
     </nav>
   </div>
@@ -71,40 +70,12 @@
   </div>
 </header>
 
-<section class="promo-banner">
-  <div id="promoSplide" class="splide" aria-label="프로모션 배너">
-    <div class="splide__track">
-      <ul class="splide__list">
-        <li class="splide__slide"><img src="images/banner-1.jpg" alt="VELFONT OFFICE 무드보드 파노라마 배너 1/5"></li>
-        <li class="splide__slide"><img src="images/banner-2.jpg" alt="VELFONT OFFICE 무드보드 파노라마 배너 2/5"></li>
-        <li class="splide__slide"><img src="images/banner-3.jpg" alt="VELFONT OFFICE 무드보드 파노라마 배너 3/5"></li>
-        <li class="splide__slide"><img src="images/banner-4.jpg" alt="VELFONT OFFICE 무드보드 파노라마 배너 4/5"></li>
-        <li class="splide__slide"><img src="images/banner-5.jpg" alt="VELFONT OFFICE 무드보드 파노라마 배너 5/5"></li>
-      </ul>
-    </div>
-  </div>
-</section>
+<nav class="breadcrumb">
+  <a href="index.html">All</a> <span>/</span> <span id="breadcrumbName"></span>
+</nav>
 
-<main>
-  <section class="collection-head">
-    <h1>All</h1>
-    <div class="collection-meta">
-      <span class="item-count" id="itemCount">전체 12개 상품</span>
-      <div class="sort-wrap">
-        <label for="sortSelect">정렬</label>
-        <select id="sortSelect">
-          <option value="recommended">추천순</option>
-          <option value="new">신상품순</option>
-          <option value="price-asc">낮은 가격순</option>
-          <option value="price-desc">높은 가격순</option>
-        </select>
-      </div>
-    </div>
-  </section>
-
-  <section class="product-grid" id="productGrid">
-    <!-- 상품 카드는 js/main.js 에서 렌더링됩니다 -->
-  </section>
+<main class="product-detail" id="productDetail">
+  <!-- 상품 상세 내용은 js/product.js 에서 렌더링됩니다 -->
 </main>
 
 <footer class="site-footer">
@@ -152,9 +123,8 @@
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/js/splide.min.js"></script>
 <script src="js/products.js"></script>
 <script src="js/common.js"></script>
-<script src="js/main.js"></script>
+<script src="js/product.js"></script>
 </body>
 </html>
