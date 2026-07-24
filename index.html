@@ -71,6 +71,24 @@
   </div>
 </header>
 
+<div class="cart-overlay" id="cartOverlay"></div>
+<aside class="cart-drawer" id="cartDrawer" aria-label="장바구니">
+  <div class="cart-drawer-head">
+    <h3>장바구니</h3>
+    <button class="cart-drawer-close" id="cartDrawerClose" aria-label="장바구니 닫기">
+      <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="cart-drawer-items" id="cartDrawerItems"></div>
+  <div class="cart-drawer-foot">
+    <div class="cart-subtotal-row">
+      <span>소계</span>
+      <span id="cartSubtotal">0원</span>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn">결제하기</button>
+  </div>
+</aside>
+
 <section class="promo-banner">
   <div id="promoSplide" class="splide" aria-label="프로모션 배너">
     <div class="splide__track">

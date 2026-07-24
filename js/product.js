@@ -154,8 +154,8 @@ function setupAddToCart(product) {
       alert("사이즈를 선택해주세요.");
       return;
     }
-    cart.add(1);
-    alert(`${product.name} (${selectedSize.dataset.size}) 장바구니에 담았습니다.`);
+    addToCart(product.id, selectedSize.dataset.size, 1);
+    openCartDrawer();
   });
 }
 
