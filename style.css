@@ -46,6 +46,7 @@ svg {
 /* ---------- Header ---------- */
 :root {
   --header-height: 127px;
+  --color-hover: #e0261f;
 }
 
 .site-header {
@@ -78,10 +79,25 @@ svg {
   white-space: nowrap;
 }
 
-.logo img {
-  height: 80px;
-  width: auto;
+.logo-mark {
   display: block;
+  height: 80px;
+  aspect-ratio: 1080 / 725;
+  background-color: #111;
+  -webkit-mask-image: url("images/logo.png");
+  mask-image: url("images/logo.png");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  transition: background-color 0.18s ease;
+}
+
+.logo:hover .logo-mark,
+.logo:focus-visible .logo-mark {
+  background-color: var(--color-hover);
 }
 
 .main-nav > ul {
@@ -96,13 +112,17 @@ svg {
 .main-nav > ul > li > a {
   display: block;
   padding: 22px 0;
-  font-size: 13px;
+  font-size: clamp(15px, 1.6vw, 19px);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   border-bottom: 1px solid transparent;
+  transition: color 0.18s ease;
 }
 
-.main-nav > ul > li > a:hover,
+.main-nav > ul > li > a:hover {
+  color: var(--color-hover);
+}
+
 .main-nav > ul > li > a.active {
   border-bottom-color: #111;
 }
@@ -147,6 +167,11 @@ svg {
 .icon-btn {
   position: relative;
   display: flex;
+  transition: color 0.18s ease;
+}
+
+.icon-btn:hover {
+  color: var(--color-hover);
 }
 
 .cart-count {
@@ -177,6 +202,11 @@ svg {
   display: block;
   height: 1px;
   background: #111;
+  transition: background-color 0.18s ease;
+}
+
+.nav-toggle:hover span {
+  background-color: var(--color-hover);
 }
 
 .search-bar {
