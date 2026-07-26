@@ -380,6 +380,179 @@ svg {
   cursor: not-allowed;
 }
 
+/* ---------- Login Modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.modal-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.login-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -48%);
+  z-index: 501;
+  width: 360px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #111;
+  padding: 32px 28px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.login-modal.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.modal-close svg {
+  width: 14px;
+  height: 14px;
+}
+
+.modal-close:hover {
+  color: #111;
+}
+
+.login-modal h2 {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-field {
+  margin-top: 16px;
+}
+
+.login-field:first-child {
+  margin-top: 0;
+}
+
+.login-field label {
+  display: block;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.login-field input {
+  width: 100%;
+  border: 1px solid #111;
+  background: #fff;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+
+.login-forgot-link {
+  display: inline-block;
+  align-self: flex-end;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+  text-decoration: underline;
+}
+
+.login-submit-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.login-submit-btn:hover {
+  background: #333;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: #999;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #ddd;
+}
+
+.google-login-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #111;
+  font-size: 13px;
+}
+
+.google-login-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.google-login-btn:hover {
+  background: #f2f2f2;
+}
+
+.login-signup-note {
+  margin-top: 24px;
+  font-size: 12px;
+  text-align: center;
+  color: #666;
+}
+
+.login-signup-note a {
+  text-decoration: underline;
+  color: #111;
+}
+
 /* ---------- Checkout Page ---------- */
 .checkout-page {
   max-width: 960px;
@@ -1101,9 +1274,18 @@ svg {
     padding: 0 16px;
     /* Equal 1fr/1fr side columns squeeze the icon-heavy right side at
        narrow widths (the left side only ever holds the hamburger).
-       Let each side size to its own content and keep the logo centered
-       in the flexible middle column instead. */
+       Let each side size to its own content instead. */
     grid-template-columns: auto 1fr auto;
+  }
+
+  /* The left/right header groups aren't the same width (hamburger vs.
+     login+cart), so centering the logo in the grid's middle track still
+     leaves it off-center. Pin it to the true viewport center instead. */
+  .logo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 
   .nav-toggle {

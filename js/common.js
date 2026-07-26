@@ -220,6 +220,51 @@ function renderAccountButton() {
   btn.textContent = isLoggedIn() ? "profile" : "login";
 }
 
+function setupLoginModal() {
+  const accountBtn = document.getElementById("accountBtn");
+  const overlay = document.getElementById("loginOverlay");
+  const modal = document.getElementById("loginModal");
+  const closeBtn = document.getElementById("loginModalClose");
+  const form = document.getElementById("loginForm");
+  const googleBtn = document.getElementById("googleLoginBtn");
+  if (!accountBtn || !modal) return;
+
+  function openLoginModal() {
+    if (isLoggedIn()) return;
+    overlay.classList.add("open");
+    modal.classList.add("open");
+    document.getElementById("loginEmail")?.focus();
+  }
+
+  function closeLoginModal() {
+    overlay.classList.remove("open");
+    modal.classList.remove("open");
+  }
+
+  function logIn() {
+    localStorage.setItem(LOGIN_STORAGE_KEY, "true");
+    renderAccountButton();
+    closeLoginModal();
+  }
+
+  accountBtn.addEventListener("click", openLoginModal);
+  closeBtn?.addEventListener("click", closeLoginModal);
+  overlay?.addEventListener("click", closeLoginModal);
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeLoginModal();
+  });
+
+  form?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    logIn();
+  });
+
+  googleBtn?.addEventListener("click", () => {
+    logIn();
+  });
+}
+
 function revealPageVeil() {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -234,5 +279,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupCartDrawer();
   setupNewsletter();
   renderAccountButton();
+  setupLoginModal();
   revealPageVeil();
 });
