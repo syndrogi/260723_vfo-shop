@@ -94,13 +94,11 @@ function renderCartDrawer() {
 }
 
 function openCartDrawer() {
-  document.getElementById("cartDrawer")?.classList.add("open");
-  document.getElementById("cartOverlay")?.classList.add("open");
+  document.getElementById("cartNavItem")?.classList.add("open");
 }
 
 function closeCartDrawer() {
-  document.getElementById("cartDrawer")?.classList.remove("open");
-  document.getElementById("cartOverlay")?.classList.remove("open");
+  document.getElementById("cartNavItem")?.classList.remove("open");
 }
 
 function setupNav() {
@@ -148,17 +146,25 @@ function setupSearch() {
 }
 
 function setupCartDrawer() {
+  const cartNavItem = document.getElementById("cartNavItem");
   const cartBtn = document.getElementById("cartBtn");
   const drawer = document.getElementById("cartDrawer");
-  const overlay = document.getElementById("cartOverlay");
-  const closeBtn = document.getElementById("cartDrawerClose");
   const itemsEl = document.getElementById("cartDrawerItems");
   const checkoutBtn = document.getElementById("checkoutBtn");
   if (!drawer) return;
 
-  cartBtn?.addEventListener("click", openCartDrawer);
-  closeBtn?.addEventListener("click", closeCartDrawer);
-  overlay?.addEventListener("click", closeCartDrawer);
+  cartBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    cartNavItem?.classList.toggle("open");
+  });
+
+  document.addEventListener("click", (e) => {
+    if (cartNavItem && !cartNavItem.contains(e.target)) closeCartDrawer();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeCartDrawer();
+  });
 
   itemsEl.addEventListener("click", (e) => {
     const itemEl = e.target.closest(".cart-item");
