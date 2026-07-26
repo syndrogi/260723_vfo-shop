@@ -1148,7 +1148,10 @@ svg {
     border-bottom: 1px solid #eee;
   }
 
-  .dropdown {
+  /* Scoped to .main-nav so this doesn't flatten the cart dropdown too —
+     the cart panel should stay a floating overlay on mobile, not fold
+     into the off-canvas nav list like the All submenu does. */
+  .main-nav .dropdown {
     position: static;
     opacity: 1;
     visibility: visible;

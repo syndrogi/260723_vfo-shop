@@ -148,12 +148,13 @@ function setupAddToCart(product) {
   const btn = document.getElementById("addToCartBtn");
   if (!btn) return;
 
-  btn.addEventListener("click", () => {
+  btn.addEventListener("click", (e) => {
     const selectedSize = document.querySelector(".size-option.active");
     if (!selectedSize) {
       alert("사이즈를 선택해주세요.");
       return;
     }
+    e.stopPropagation();
     addToCart(product.id, selectedSize.dataset.size, 1);
     openCartDrawer();
   });
