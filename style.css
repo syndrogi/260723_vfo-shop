@@ -1165,6 +1165,39 @@ svg {
     display: block;
   }
 
+  /* Cart panel becomes a full-height off-canvas drawer on mobile,
+     sliding in from the right edge the same way the hamburger menu
+     slides in from the left — tap to open/close instead of hover. */
+  .cart-drawer {
+    position: fixed;
+    top: var(--header-height);
+    right: 0;
+    left: auto;
+    bottom: 0;
+    width: 85vw;
+    max-width: 360px;
+    max-height: none;
+    border: none;
+    border-left: 1px solid #111;
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(100%);
+    transition: transform 0.25s ease;
+  }
+
+  .cart-nav-item:hover .cart-drawer {
+    transform: translateX(100%);
+  }
+
+  .cart-nav-item.open .cart-drawer {
+    transform: translateX(0);
+  }
+
+  .cart-drawer-items {
+    flex: 1;
+    overflow-y: auto;
+  }
+
   .collection-head {
     padding: 28px 16px 16px;
   }
