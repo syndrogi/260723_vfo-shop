@@ -106,19 +106,31 @@ function closeCartDrawer() {
 function setupNav() {
   const navToggle = document.getElementById("navToggle");
   const mainNav = document.getElementById("mainNav");
-  if (!navToggle || !mainNav) return;
-
-  navToggle.addEventListener("click", () => {
-    mainNav.classList.toggle("open");
+  navToggle?.addEventListener("click", () => {
+    mainNav?.classList.toggle("open");
   });
 
-  document.querySelectorAll(".has-dropdown > a").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      if (window.innerWidth <= 720) {
-        e.preventDefault();
-        link.parentElement.classList.toggle("open");
-      }
-    });
+  const allNavItem = document.getElementById("allNavItem");
+  const allToggle = document.getElementById("allToggle");
+  if (!allNavItem || !allToggle) return;
+
+  function closeAllDropdown() {
+    allNavItem.classList.remove("open");
+    allToggle.setAttribute("aria-expanded", "false");
+  }
+
+  allToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = allNavItem.classList.toggle("open");
+    allToggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!allNavItem.contains(e.target)) closeAllDropdown();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAllDropdown();
   });
 }
 
@@ -190,9 +202,31 @@ function setupNewsletter() {
   });
 }
 
+const LOGIN_STORAGE_KEY = "velfontLoggedIn";
+
+function isLoggedIn() {
+  return localStorage.getItem(LOGIN_STORAGE_KEY) === "true";
+}
+
+function renderAccountButton() {
+  const btn = document.getElementById("accountBtn");
+  if (!btn) return;
+  btn.textContent = isLoggedIn() ? "profile" : "login";
+}
+
+function revealPageVeil() {
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.documentElement.classList.add("is-entered");
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   setupNav();
   setupSearch();
   setupCartDrawer();
   setupNewsletter();
+  renderAccountButton();
+  revealPageVeil();
 });

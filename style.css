@@ -109,24 +109,6 @@ svg {
   position: relative;
 }
 
-.main-nav > ul > li > a {
-  display: block;
-  padding: 22px 0;
-  font-size: clamp(15px, 1.6vw, 19px);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid transparent;
-  transition: color 0.18s ease;
-}
-
-.main-nav > ul > li > a:hover {
-  color: var(--color-hover);
-}
-
-.main-nav > ul > li > a.active {
-  border-bottom-color: #111;
-}
-
 .dropdown {
   position: absolute;
   top: 100%;
@@ -141,7 +123,8 @@ svg {
   transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
 }
 
-.has-dropdown:hover .dropdown {
+.has-dropdown:hover .dropdown,
+.has-dropdown.open .dropdown {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
@@ -164,29 +147,22 @@ svg {
   gap: 18px;
 }
 
-.icon-btn {
-  position: relative;
-  display: flex;
+.header-text-btn {
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: lowercase;
   transition: color 0.18s ease;
 }
 
-.icon-btn:hover {
+.header-text-btn:hover {
   color: var(--color-hover);
+  text-decoration: none;
 }
 
 .cart-count {
-  position: absolute;
-  top: -8px;
-  right: -10px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 3px;
-  border-radius: 50%;
-  background: #111;
-  color: #fff;
-  font-size: 10px;
-  line-height: 16px;
-  text-align: center;
+  font-size: clamp(15px, 1.6vw, 19px);
+  font-weight: 700;
 }
 
 .nav-toggle {
@@ -764,7 +740,7 @@ svg {
 
 /* ---------- Breadcrumb ---------- */
 .breadcrumb {
-  padding: 16px 32px;
+  padding: 24px 64px;
   font-size: 12px;
   color: #666;
   text-transform: uppercase;
@@ -782,15 +758,17 @@ svg {
 /* ---------- Product Detail ---------- */
 .product-detail {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 48px;
-  padding: 0 32px 64px;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 80px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 64px 140px;
   align-items: start;
 }
 
 .product-gallery {
   position: sticky;
-  top: calc(var(--header-height) + 24px);
+  top: calc(var(--header-height) + 40px);
 }
 
 .gallery-main {
@@ -840,8 +818,8 @@ svg {
 
 .gallery-thumbs {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 .thumb {
@@ -867,25 +845,27 @@ svg {
 }
 
 .product-panel {
-  padding-top: 40px;
+  padding-top: 8px;
+  max-width: 440px;
 }
 
 .product-panel h1 {
-  font-size: 24px;
+  font-size: clamp(26px, 2.4vw, 36px);
   font-weight: 700;
+  line-height: 1.2;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.03em;
 }
 
 .product-colors {
-  margin-top: 8px;
-  font-size: 13px;
+  margin-top: 14px;
+  font-size: 14px;
   color: #666;
 }
 
 .product-price {
-  margin-top: 16px;
-  font-size: 18px;
+  margin-top: 28px;
+  font-size: 20px;
   display: flex;
   gap: 10px;
   align-items: baseline;
@@ -894,14 +874,14 @@ svg {
 .product-description {
   list-style: disc;
   padding-left: 18px;
-  margin-top: 24px;
+  margin-top: 36px;
   font-size: 13px;
-  line-height: 1.7;
+  line-height: 1.9;
   color: #333;
 }
 
 .option-group {
-  margin-top: 28px;
+  margin-top: 40px;
 }
 
 .option-group label {
@@ -967,8 +947,8 @@ svg {
 
 .add-to-cart-btn {
   width: 100%;
-  margin-top: 32px;
-  padding: 16px;
+  margin-top: 48px;
+  padding: 18px;
   background: #111;
   color: #fff;
   font-size: 13px;
@@ -987,7 +967,7 @@ svg {
 }
 
 .accordion {
-  margin-top: 40px;
+  margin-top: 56px;
   border-top: 1px solid #111;
 }
 
@@ -1030,9 +1010,14 @@ svg {
 }
 
 @media (max-width: 900px) {
+  .breadcrumb {
+    padding: 16px;
+  }
+
   .product-detail {
     grid-template-columns: 1fr;
-    padding: 0 16px 48px;
+    gap: 32px;
+    padding: 0 16px 64px;
   }
 
   .product-gallery {
@@ -1041,6 +1026,7 @@ svg {
 
   .product-panel {
     padding-top: 24px;
+    max-width: none;
   }
 }
 
@@ -1138,10 +1124,23 @@ svg {
 @media (max-width: 720px) {
   .site-header {
     padding: 0 16px;
+    /* Equal 1fr/1fr side columns squeeze the icon-heavy right side at
+       narrow widths (the left side only ever holds the hamburger).
+       Let each side size to its own content and keep the logo centered
+       in the flexible middle column instead. */
+    grid-template-columns: auto 1fr auto;
   }
 
   .nav-toggle {
     display: flex;
+  }
+
+  .header-icons {
+    gap: 12px;
+  }
+
+  .header-text-btn {
+    white-space: nowrap;
   }
 
   .main-nav {
@@ -1166,7 +1165,10 @@ svg {
     gap: 0;
   }
 
-  .main-nav > ul > li > a {
+  .main-nav > ul > li > .header-text-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
     padding: 16px 0;
     border-bottom: 1px solid #eee;
   }
@@ -1202,14 +1204,37 @@ svg {
     padding: 32px 16px;
     gap: 28px;
   }
-
-  .header-icons {
-    gap: 12px;
-  }
 }
 
 @media (max-width: 480px) {
-  .logo img {
+  .logo-mark {
     height: 56px;
   }
+}
+
+/* ---------- Page Veil (cross-site entrance) ---------- */
+/* Covers the page while `js-enter` is set (inline script in <head>, before
+   first paint) so an arrival from another VELFONT OFFICE site fades in
+   instead of popping. Opacity 0 by default so a blocked/broken script
+   never leaves the page stuck under it. */
+.page-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.js-enter .page-veil {
+  opacity: 1;
+  pointer-events: auto;
+  transition: none;
+}
+
+html.js-enter.is-entered .page-veil {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }

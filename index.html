@@ -6,8 +6,15 @@
 <title>VELFONT OFFICE — All Collections</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4/dist/css/splide.min.css">
 <link rel="stylesheet" href="style.css">
+<script>
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.documentElement.classList.add("js-enter");
+  }
+</script>
 </head>
 <body>
+
+<div class="page-veil" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="header-side header-left">
@@ -17,32 +24,16 @@
 
     <nav class="main-nav" id="mainNav">
       <ul>
-        <li class="has-dropdown">
-          <a href="#">Outerwear</a>
-          <ul class="dropdown">
-            <li><a href="#">코트</a></li>
-            <li><a href="#">재킷</a></li>
-            <li><a href="#">베스트</a></li>
+        <li class="has-dropdown" id="allNavItem">
+          <button type="button" class="header-text-btn" id="allToggle" aria-expanded="false" aria-controls="allDropdown">All</button>
+          <ul class="dropdown" id="allDropdown">
+            <li><a href="#">Outerwear</a></li>
+            <li><a href="#">Tops</a></li>
+            <li><a href="#">Bottoms</a></li>
+            <li><a href="#">Accessories</a></li>
           </ul>
         </li>
-        <li class="has-dropdown">
-          <a href="#">Tops</a>
-          <ul class="dropdown">
-            <li><a href="#">셔츠</a></li>
-            <li><a href="#">니트</a></li>
-            <li><a href="#">티셔츠</a></li>
-          </ul>
-        </li>
-        <li class="has-dropdown">
-          <a href="#">Bottoms</a>
-          <ul class="dropdown">
-            <li><a href="#">팬츠</a></li>
-            <li><a href="#">데님</a></li>
-            <li><a href="#">쇼츠</a></li>
-          </ul>
-        </li>
-        <li><a href="#">Accessories</a></li>
-        <li><a href="index.html" class="active">All</a></li>
+        <li><button type="button" class="header-text-btn" id="searchToggle" aria-label="검색">search</button></li>
       </ul>
     </nav>
   </div>
@@ -53,14 +44,8 @@
 
   <div class="header-side header-right">
     <div class="header-icons">
-      <button class="icon-btn" id="searchToggle" aria-label="검색">
-        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      </button>
-      <button class="icon-btn" aria-label="계정">
-        <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/><path d="M3 21c1.5-4.5 6-6.5 9-6.5s7.5 2 9 6.5"/></svg>
-      </button>
-      <button class="icon-btn cart-btn" id="cartBtn" aria-label="장바구니">
-        <svg viewBox="0 0 24 24"><path d="M3 6h2l2.4 12.2a2 2 0 0 0 2 1.8h7.6a2 2 0 0 0 2-1.6L21 8H6"/><circle cx="9" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg>
+      <button class="header-text-btn" id="accountBtn" aria-label="로그인">login</button>
+      <button class="header-text-btn" id="cartBtn" aria-label="장바구니">
         <span class="cart-count" id="cartCount">0</span>
       </button>
     </div>
