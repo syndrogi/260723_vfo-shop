@@ -732,8 +732,8 @@ svg {
 /* ---------- Product Detail ---------- */
 .product-detail {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
-  gap: 80px;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 64px;
   max-width: 1400px;
   margin: 0 auto;
   padding: 24px 64px 140px;
@@ -820,7 +820,8 @@ svg {
 
 .product-panel {
   padding-top: 8px;
-  max-width: 440px;
+  max-width: 400px;
+  justify-self: end;
 }
 
 .product-panel h1 {
