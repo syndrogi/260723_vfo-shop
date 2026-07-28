@@ -716,17 +716,16 @@ svg {
   cursor: grabbing;
 }
 
-/* The 1920/700 frame is far wider than the photo's own ratio, so
-   covering the frame's width leaves very little horizontal slack to
-   drift within (~±6%) but a lot of vertical slack (~±24%) — the pan
-   range below is deliberately lopsided to match, so it reaches the
-   photo's top and bottom edges without ever showing empty space. */
+/* This photo's own ratio (2.54:1) is close to the 1920/700 frame
+   (2.74:1), so covering the frame at 115% leaves only modest slack in
+   either direction (~±6.5% horizontal, ~±9.5% vertical) — kept a
+   touch under those maximums so the pan never shows empty space. */
 @keyframes promoBannerFloat {
   0%   { transform: translate(0%, 0%); }
-  20%  { transform: translate(-6%, -22%); }
-  40%  { transform: translate(6%, 22%); }
-  60%  { transform: translate(6%, -22%); }
-  80%  { transform: translate(-6%, 22%); }
+  20%  { transform: translate(-6%, -9%); }
+  40%  { transform: translate(6%, 9%); }
+  60%  { transform: translate(6%, -9%); }
+  80%  { transform: translate(-6%, 9%); }
   100% { transform: translate(0%, 0%); }
 }
 
