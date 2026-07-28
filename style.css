@@ -687,19 +687,33 @@ svg {
   aspect-ratio: 1920 / 700;
 }
 
-/* The banner is much wider than the source photo, so the image is
-   oversized (115% of the frame) and slowly drifts within it — this
-   both hides the cover-crop seams and, over one full loop, brings
-   every edge of the photo into view at some point. */
-.promo-banner-image img {
+/* Pure centering, kept on its own element so the img's own transform
+   (below) is free to represent only drift/drag — no percentage math
+   to untangle when handing off between the CSS animation and JS. */
+.promo-banner-image-center {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 115%;
-  height: auto;
-  max-width: none;
   transform: translate(-50%, -50%);
+}
+
+/* The banner is much wider than the source photo, so the image is
+   oversized (115% of the frame) and slowly drifts within it — this
+   both hides the cover-crop seams and, over one full loop, brings
+   every edge of the photo into view at some point. Click-drag pauses
+   the drift and hands control to js/main.js. */
+.promo-banner-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  cursor: grab;
+  touch-action: none;
   animation: promoBannerFloat 28s ease-in-out infinite;
+}
+
+.promo-banner-image.is-dragging img {
+  cursor: grabbing;
 }
 
 /* The 1920/700 frame is far wider than the photo's own ratio, so
@@ -708,12 +722,12 @@ svg {
    range below is deliberately lopsided to match, so it reaches the
    photo's top and bottom edges without ever showing empty space. */
 @keyframes promoBannerFloat {
-  0%   { transform: translate(-50%, -50%) translate(0%, 0%); }
-  20%  { transform: translate(-50%, -50%) translate(-6%, -22%); }
-  40%  { transform: translate(-50%, -50%) translate(6%, 22%); }
-  60%  { transform: translate(-50%, -50%) translate(6%, -22%); }
-  80%  { transform: translate(-50%, -50%) translate(-6%, 22%); }
-  100% { transform: translate(-50%, -50%) translate(0%, 0%); }
+  0%   { transform: translate(0%, 0%); }
+  20%  { transform: translate(-6%, -22%); }
+  40%  { transform: translate(6%, 22%); }
+  60%  { transform: translate(6%, -22%); }
+  80%  { transform: translate(-6%, 22%); }
+  100% { transform: translate(0%, 0%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
