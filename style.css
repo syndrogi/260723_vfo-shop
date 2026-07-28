@@ -676,69 +676,50 @@ svg {
   }
 }
 
-/* ---------- Promo Banner (Splide) ---------- */
+/* ---------- Promo Banner ---------- */
 .promo-banner {
   border-bottom: 1px solid #111;
 }
 
-.promo-banner .splide__slide img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1920 / 700;
-  object-fit: cover;
-}
-
-.promo-banner .splide__arrow {
-  background: transparent;
-  border: 1px solid #fff;
-  opacity: 0.85;
-  width: 36px;
-  height: 36px;
-}
-
-.promo-banner .splide__arrow:hover {
-  opacity: 1;
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.promo-banner .splide__arrow svg {
-  fill: #fff;
-}
-
-/* Add numbers to pagination buttons by CSS */
-.promo-banner .splide__pagination {
-  counter-reset: pagination-num;
-  bottom: 18px;
-}
-
-.promo-banner .splide__pagination__page {
-  counter-increment: pagination-num;
+.promo-banner-image {
   position: relative;
-  width: 22px;
-  height: 22px;
-  margin: 0 4px;
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  opacity: 1;
-  transform: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  aspect-ratio: 1920 / 700;
 }
 
-.promo-banner .splide__pagination__page:before {
-  content: counter(pagination-num);
-  font-size: 10px;
-  color: #fff;
+/* The banner is much wider than the source photo, so the image is
+   oversized (115% of the frame) and slowly drifts within it — this
+   both hides the cover-crop seams and, over one full loop, brings
+   every edge of the photo into view at some point. */
+.promo-banner-image img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 115%;
+  height: auto;
+  max-width: none;
+  transform: translate(-50%, -50%);
+  animation: promoBannerFloat 28s ease-in-out infinite;
 }
 
-.promo-banner .splide__pagination__page.is-active {
-  background: #fff;
-  transform: none;
+/* The 1920/700 frame is far wider than the photo's own ratio, so
+   covering the frame's width leaves very little horizontal slack to
+   drift within (~±6%) but a lot of vertical slack (~±24%) — the pan
+   range below is deliberately lopsided to match, so it reaches the
+   photo's top and bottom edges without ever showing empty space. */
+@keyframes promoBannerFloat {
+  0%   { transform: translate(-50%, -50%) translate(0%, 0%); }
+  20%  { transform: translate(-50%, -50%) translate(-6%, -22%); }
+  40%  { transform: translate(-50%, -50%) translate(6%, 22%); }
+  60%  { transform: translate(-50%, -50%) translate(6%, -22%); }
+  80%  { transform: translate(-50%, -50%) translate(-6%, 22%); }
+  100% { transform: translate(-50%, -50%) translate(0%, 0%); }
 }
 
-.promo-banner .splide__pagination__page.is-active:before {
-  color: #111;
+@media (prefers-reduced-motion: reduce) {
+  .promo-banner-image img {
+    animation: none;
+  }
 }
 
 /* ---------- Collection Head ---------- */

@@ -52,24 +52,7 @@ function setupSort() {
   sortSelect.addEventListener("change", (e) => sortProducts(e.target.value));
 }
 
-function setupPromoBanner() {
-  const el = document.getElementById("promoSplide");
-  if (!el || typeof Splide === "undefined") return;
-
-  new Splide(el, {
-    type: "loop",
-    perPage: 1,
-    arrows: true,
-    pagination: true,
-    autoplay: true,
-    interval: 4000,
-    pauseOnHover: true,
-    speed: 600,
-  }).mount();
-}
-
 document.addEventListener("DOMContentLoaded", () => {
   renderProducts();
   setupSort();
-  setupPromoBanner();
 });
