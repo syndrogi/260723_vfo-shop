@@ -689,7 +689,7 @@ svg {
 
 /* Zoomed in and anchored on the model rather than the photo's
    geometric center (translate% here is relative to the image's own
-   box, so -55%/-55% is literally "the point 55% across / 55% down
+   box, so -55%/-58% is literally "the point 55% across / 58% down
    the source photo" — her face/chest, biased down from the sky). Pure
    positioning, kept on its own element so the img's own transform
    (below) is free to represent only the idle drift / hover parallax,
@@ -699,7 +699,7 @@ svg {
   top: 50%;
   left: 50%;
   width: 195%;
-  transform: translate(-55%, -55%);
+  transform: translate(-55%, -58%);
 }
 
 /* js/main.js drives all of this element's own transform: a small
