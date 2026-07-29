@@ -68,7 +68,7 @@ function setupPromoBannerParallax() {
 
   // Must match the translate() in .promo-banner-image-center.
   const ANCHOR_X = 0.55;
-  const ANCHOR_Y = 0.52;
+  const ANCHOR_Y = 0.55;
   const RETURN_MS = 700;
   const IDLE_AMOUNT = 0.4; // fraction of the tighter safe bound per axis
   const HOVER_AMOUNT = 0.5; // fraction of the full bound used while panning on hover
