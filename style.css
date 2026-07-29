@@ -687,52 +687,30 @@ svg {
   aspect-ratio: 1920 / 700;
 }
 
-/* Pure centering, kept on its own element so the img's own transform
-   (below) is free to represent only drift/drag — no percentage math
-   to untangle when handing off between the CSS animation and JS. */
+/* Zoomed in and anchored on the model rather than the photo's
+   geometric center (translate% here is relative to the image's own
+   box, so -59%/-43% is literally "the point 59% across / 43% down
+   the source photo" — roughly her face/torso). Pure positioning,
+   kept on its own element so the img's own transform (below) is
+   free to represent only the idle drift / hover parallax, with no
+   percentage math to untangle in js/main.js. */
 .promo-banner-image-center {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 115%;
-  transform: translate(-50%, -50%);
+  width: 195%;
+  transform: translate(-59%, -43%);
 }
 
-/* The banner is much wider than the source photo, so the image is
-   oversized (115% of the frame) and slowly drifts within it — this
-   both hides the cover-crop seams and, over one full loop, brings
-   every edge of the photo into view at some point. Click-drag pauses
-   the drift and hands control to js/main.js. */
+/* js/main.js drives all of this element's own transform: a small
+   continuous idle drift at rest, panning toward the cursor on hover,
+   and an eased return to center (0, 0) on pointer leave. */
 .promo-banner-image img {
   display: block;
   width: 100%;
   height: auto;
-  cursor: grab;
-  touch-action: none;
-  animation: promoBannerFloat 28s ease-in-out infinite;
-}
-
-.promo-banner-image.is-dragging img {
-  cursor: grabbing;
-}
-
-/* This photo's own ratio (2.54:1) is close to the 1920/700 frame
-   (2.74:1), so covering the frame at 115% leaves only modest slack in
-   either direction (~±6.5% horizontal, ~±9.5% vertical) — kept a
-   touch under those maximums so the pan never shows empty space. */
-@keyframes promoBannerFloat {
-  0%   { transform: translate(0%, 0%); }
-  20%  { transform: translate(-6%, -9%); }
-  40%  { transform: translate(6%, 9%); }
-  60%  { transform: translate(6%, -9%); }
-  80%  { transform: translate(-6%, 9%); }
-  100% { transform: translate(0%, 0%); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .promo-banner-image img {
-    animation: none;
-  }
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 /* ---------- Collection Head ---------- */
