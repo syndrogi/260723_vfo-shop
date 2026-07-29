@@ -67,7 +67,7 @@ function setupPromoBannerParallax() {
   if (!wrap || !img) return;
 
   // Must match the translate() in .promo-banner-image-center.
-  const ANCHOR_X = 0.59;
+  const ANCHOR_X = 0.65;
   const ANCHOR_Y = 0.52;
   const RETURN_MS = 700;
   const IDLE_AMOUNT = 0.4; // fraction of the tighter safe bound per axis
