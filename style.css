@@ -702,9 +702,8 @@ svg {
   transform: translate(-55%, -58%);
 }
 
-/* js/main.js drives all of this element's own transform: a small
-   continuous idle drift at rest, panning toward the cursor on hover,
-   and an eased return to center (0, 0) on pointer leave. */
+/* js/main.js drives this element's own transform: a small continuous
+   idle drift. */
 .promo-banner-image img {
   display: block;
   width: 100%;
