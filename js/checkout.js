@@ -11,12 +11,12 @@ function renderCheckout() {
 
   itemsEl.innerHTML = items
     .map((i) => {
-      const product = products.find((p) => p.id === i.productId);
+      const product = getProductById(i.productId);
       if (!product) return "";
       return `
         <div class="checkout-item">
           <div class="checkout-item-image">
-            ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ""}
+            ${product.thumbnail ? `<img src="${resolveImageUrl(product.thumbnail)}" alt="${product.name}">` : ""}
           </div>
           <div class="checkout-item-info">
             <div class="checkout-item-name">${product.name}</div>
@@ -41,7 +41,8 @@ function setupCheckoutSubmit() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await productsReady;
   renderCheckout();
   setupCheckoutSubmit();
 });

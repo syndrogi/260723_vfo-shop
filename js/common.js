@@ -46,7 +46,7 @@ function getCartCount() {
 
 function getCartSubtotal() {
   return loadCart().reduce((sum, i) => {
-    const product = products.find((p) => p.id === i.productId);
+    const product = getProductById(i.productId);
     return sum + (product ? product.price * i.qty : 0);
   }, 0);
 }
@@ -63,12 +63,12 @@ function renderCartDrawer() {
   itemsEl.innerHTML = items.length
     ? items
         .map((i) => {
-          const product = products.find((p) => p.id === i.productId);
+          const product = getProductById(i.productId);
           if (!product) return "";
           return `
             <div class="cart-item" data-id="${i.productId}" data-size="${i.size}">
               <div class="cart-item-image">
-                ${product.image ? `<img src="${product.image}" alt="${product.name}">` : ""}
+                ${product.thumbnail ? `<img src="${resolveImageUrl(product.thumbnail)}" alt="${product.name}">` : ""}
               </div>
               <div class="cart-item-info">
                 <div class="cart-item-name">${product.name}</div>
@@ -276,9 +276,13 @@ function revealPageVeil() {
 document.addEventListener("DOMContentLoaded", () => {
   setupNav();
   setupSearch();
-  setupCartDrawer();
   setupNewsletter();
   renderAccountButton();
   setupLoginModal();
   revealPageVeil();
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await productsReady;
+  setupCartDrawer();
 });

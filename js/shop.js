@@ -1,45 +1,57 @@
+function badgeFor(product) {
+  if (product.status === "sold_out") return '<span class="badge">Sold Out</span>';
+  if (product.status === "coming_soon") return '<span class="badge">Coming Soon</span>';
+  return "";
+}
+
 function renderProducts() {
   const grid = document.getElementById("productGrid");
+  const itemCount = document.getElementById("itemCount");
+  const products = getProducts();
+
+  if (getProductsLoadError()) {
+    grid.innerHTML = `<p class="cart-empty">상품을 불러오지 못했습니다.</p>`;
+    itemCount.textContent = "";
+    return;
+  }
+
+  if (!products.length) {
+    grid.innerHTML = `<p class="cart-empty">등록된 상품이 없습니다.</p>`;
+    itemCount.textContent = "전체 0개 상품";
+    return;
+  }
+
   grid.innerHTML = products
     .map((p) => {
-      const badge = p.soldOut
-        ? '<span class="badge">Sold Out</span>'
-        : p.salePrice
-        ? '<span class="badge sale">Sale</span>'
-        : "";
-
-      const priceHtml = p.salePrice
-        ? `<span class="original">${formatPrice(p.price)}</span><span class="sale">${formatPrice(p.salePrice)}</span>`
-        : `<span>${formatPrice(p.price)}</span>`;
-
-      const img = p.image ? `<img src="${p.image}" alt="${p.name}">` : "";
+      const soldOut = p.status === "sold_out";
+      const img = p.thumbnail ? `<img src="${resolveImageUrl(p.thumbnail)}" alt="${p.name}">` : "";
 
       return `
-        <a class="product-card" href="product.html?id=${p.id}">
+        <a class="product-card" href="product.html?slug=${p.slug}">
           <div class="product-image">
-            <div class="product-visual${p.soldOut ? " sold-out" : ""}">${img}</div>
-            ${badge}
+            <div class="product-visual${soldOut ? " sold-out" : ""}">${img}</div>
+            ${badgeFor(p)}
           </div>
           <div class="product-info">
             <div class="name">${p.name}</div>
-            <div class="colors">${p.colors}</div>
-            ${p.soldOut ? '<div class="sold-out-label">품절</div>' : `<div class="price">${priceHtml}</div>`}
+            <div class="colors">${p.color}</div>
+            ${soldOut ? '<div class="sold-out-label">품절</div>' : `<div class="price"><span>${formatPrice(p.price)}</span></div>`}
           </div>
         </a>
       `;
     })
     .join("");
 
-  document.getElementById("itemCount").textContent = `전체 ${products.length}개 상품`;
+  itemCount.textContent = `전체 ${products.length}개 상품`;
 }
 
 function sortProducts(order) {
-  const getPrice = (p) => p.salePrice ?? p.price;
+  const products = getProducts();
 
   if (order === "price-asc") {
-    products.sort((a, b) => getPrice(a) - getPrice(b));
+    products.sort((a, b) => a.price - b.price);
   } else if (order === "price-desc") {
-    products.sort((a, b) => getPrice(b) - getPrice(a));
+    products.sort((a, b) => b.price - a.price);
   } else if (order === "new") {
     products.reverse();
   }
@@ -105,7 +117,11 @@ function setupPromoBannerIdle() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  setupPromoBannerIdle();
+});
+
+document.addEventListener("DOMContentLoaded", async () => {
+  await productsReady;
   renderProducts();
   setupSort();
-  setupPromoBannerIdle();
 });

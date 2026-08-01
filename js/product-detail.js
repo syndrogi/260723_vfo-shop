@@ -1,15 +1,21 @@
 function getProductFromUrl() {
-  const id = Number(new URLSearchParams(window.location.search).get("id"));
-  return products.find((p) => p.id === id) || products[0];
+  const slug = new URLSearchParams(window.location.search).get("slug");
+  return getProductBySlug(slug) || getProducts()[0];
 }
 
 function renderProductDetail(product) {
+  if (!product) {
+    document.getElementById("productDetail").innerHTML = `<p class="cart-empty">상품을 찾을 수 없습니다.</p>`;
+    return;
+  }
+
   document.title = `VELFONT OFFICE — ${product.name}`;
   document.getElementById("breadcrumbName").textContent = product.name;
 
-  const images = product.image ? [product.image] : [];
+  const images = product.thumbnail ? [resolveImageUrl(product.thumbnail)] : [];
 
-  const soldOutClass = product.soldOut ? " sold-out" : "";
+  const soldOut = product.status === "sold_out";
+  const soldOutClass = soldOut ? " sold-out" : "";
   const mainVisual = images.length
     ? `<div class="gallery-visual${soldOutClass}"><img id="mainImage" src="${images[0]}" alt="${product.name}"></div>`
     : `<div class="gallery-visual gallery-placeholder${soldOutClass}"></div>`;
@@ -28,41 +34,38 @@ function renderProductDetail(product) {
       </div>`
     : "";
 
-  const colorOptions = product.colors
+  const colorOptions = product.color
     .split("/")
     .map((c) => c.trim())
     .map((c) => `<option value="${c}">${c}</option>`)
     .join("");
 
-  const sizeOptions = (product.sizes || [])
+  const sizeOptions = product.size
+    .split(",")
+    .map((s) => s.trim())
     .map(
       (size) => `
-      <button type="button" class="size-option" data-size="${size}"${product.soldOut ? " disabled" : ""}>${size}</button>`
+      <button type="button" class="size-option" data-size="${size}"${soldOut ? " disabled" : ""}>${size}</button>`
     )
     .join("");
 
-  const descriptionHtml = (product.description || [])
-    .map((line) => `<li>${line}</li>`)
-    .join("");
-
-  const priceHtml = product.salePrice
-    ? `<span class="original">${formatPrice(product.price)}</span><span class="sale">${formatPrice(product.salePrice)}</span>`
-    : `<span>${formatPrice(product.price)}</span>`;
+  const descriptionLines = (product.description || "").split("\n").filter(Boolean);
+  const descriptionHtml = descriptionLines.map((line) => `<li>${line}</li>`).join("");
 
   const el = document.getElementById("productDetail");
   el.innerHTML = `
     <div class="product-gallery">
       <div class="gallery-main">
         ${mainVisual}
-        ${product.soldOut ? '<span class="badge">Sold Out</span>' : ""}
+        ${soldOut ? '<span class="badge">Sold Out</span>' : ""}
       </div>
       ${thumbsHtml}
     </div>
 
     <div class="product-panel">
       <h1>${product.name}</h1>
-      <div class="product-colors">${product.colors}</div>
-      <div class="product-price">${priceHtml}</div>
+      <div class="product-colors">${product.color}</div>
+      <div class="product-price"><span>${formatPrice(product.price)}</span></div>
 
       ${descriptionHtml ? `<ul class="product-description">${descriptionHtml}</ul>` : ""}
 
@@ -80,7 +83,7 @@ function renderProductDetail(product) {
       </div>
 
       ${
-        product.soldOut
+        soldOut
           ? `<button class="add-to-cart-btn" disabled>품절된 상품입니다</button>`
           : `<button class="add-to-cart-btn" id="addToCartBtn">장바구니 담기</button>`
       }
@@ -160,10 +163,11 @@ function setupAddToCart(product) {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await productsReady;
   const product = getProductFromUrl();
   renderProductDetail(product);
   setupGallery();
   setupSizeOptions();
-  setupAddToCart(product);
+  if (product) setupAddToCart(product);
 });

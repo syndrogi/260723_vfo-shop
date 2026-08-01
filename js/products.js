@@ -1,54 +1,66 @@
-const products = [
-  {
-    id: 1,
-    name: "Short Sleeve Collar Shirt 1",
-    colors: "Ivory / Black",
-    price: 120000,
-    image: "images/collar-shirt-1.jpg",
-    sizes: ["S", "M", "L", "XL"],
-    description: [
-      "코튼 포플린 원단을 사용한 반소매 카라 셔츠입니다.",
-      "칼라 안쪽에 브랜드 라벨이 배치되어 있습니다.",
-      "가슴 포켓 디테일과 여유 있는 실루엣이 특징입니다.",
-    ],
-  },
-  {
-    id: 2,
-    name: "Souvenir Tee 1",
-    colors: "Ivory / Black",
-    price: 120000,
-    image: "images/tee-2.jpg",
-    sizes: ["S", "M", "L", "XL"],
-    description: [
-      "헤비웨이트 코튼 저지 원단을 사용한 오버사이즈 실루엣 티셔츠입니다.",
-      "전면에 그래픽 프린트가 배치되어 있습니다.",
-      "슬리브와 헴 라인은 리브 처리되어 형태를 오래 유지합니다.",
-    ],
-  },
-  {
-    id: 3,
-    name: "Souvenir Tee 2",
-    colors: "Ivory / Black",
-    price: 120000,
-    soldOut: true,
-    image: "images/tee-1.jpg",
-    sizes: ["S", "M", "L", "XL"],
-    description: [
-      "헤비웨이트 코튼 저지 원단을 사용한 오버사이즈 실루엣 티셔츠입니다.",
-      "전면에 그래픽 프린트가 배치되어 있습니다.",
-      "슬리브와 헴 라인은 리브 처리되어 형태를 오래 유지합니다.",
-    ],
-  },
-  { id: 4, name: "Souvenir Tee 3", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 5, name: "Souvenir Tee 4", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 6, name: "Souvenir Tee 5", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 7, name: "Souvenir Tee 6", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 8, name: "Souvenir Tee 7", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 9, name: "Souvenir Tee 8", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 10, name: "Souvenir Tee 9", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 11, name: "Souvenir Tee 10", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-  { id: 12, name: "Souvenir Tee 11", colors: "Ivory / Black", price: 120000, soldOut: true, image: "images/tee-1.jpg", sizes: ["S", "M", "L", "XL"] },
-];
+// Product data access. Everything else (shop.js, product-detail.js,
+// common.js, checkout.js) reads products through the functions below —
+// none of them talk to Supabase directly.
+
+const PRODUCTS_STORAGE_BUCKET = "products";
+
+let cachedProducts = [];
+let loadError = null;
+
+async function loadProducts() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("sort_order", { ascending: true });
+
+  if (error) {
+    console.error("Failed to load products from Supabase:", error.message);
+    loadError = error;
+    cachedProducts = [];
+    return cachedProducts;
+  }
+
+  loadError = null;
+  cachedProducts = data ?? [];
+  return cachedProducts;
+}
+
+// Kicked off once, at parse time, so every page only ever pays for one
+// fetch. Callers that need product data await this before touching the
+// cache accessors below.
+const productsReady = loadProducts();
+
+function getProducts() {
+  return cachedProducts;
+}
+
+function getProductsLoadError() {
+  return loadError;
+}
+
+function getProductBySlug(slug) {
+  return cachedProducts.find((p) => p.slug === slug);
+}
+
+function getProductById(id) {
+  return cachedProducts.find((p) => p.id === id);
+}
+
+// Not wired to any UI yet — the shop has no filter bar today — but kept
+// here so adding one later is a rendering change, not a data-layer one.
+function filterProducts({ category, status, featured } = {}) {
+  return cachedProducts.filter((p) => {
+    if (category && p.category !== category) return false;
+    if (status && p.status !== status) return false;
+    if (featured !== undefined && p.featured !== featured) return false;
+    return true;
+  });
+}
+
+function resolveImageUrl(path) {
+  if (!path) return "";
+  return supabaseClient.storage.from(PRODUCTS_STORAGE_BUCKET).getPublicUrl(path).data.publicUrl;
+}
 
 function formatPrice(value) {
   return value.toLocaleString("ko-KR") + "원";
