@@ -72,21 +72,21 @@ function renderCartDrawer() {
               </div>
               <div class="cart-item-info">
                 <div class="cart-item-name">${product.name}</div>
-                <div class="cart-item-size">사이즈: ${i.size}</div>
+                <div class="cart-item-size">${t("cart.size", { size: i.size })}</div>
                 <div class="cart-item-qty">
-                  <button type="button" class="qty-btn qty-minus" aria-label="수량 감소">-</button>
+                  <button type="button" class="qty-btn qty-minus" aria-label="${t("cart.qtyDecrease")}">-</button>
                   <span class="qty-value">${i.qty}</span>
-                  <button type="button" class="qty-btn qty-plus" aria-label="수량 증가">+</button>
+                  <button type="button" class="qty-btn qty-plus" aria-label="${t("cart.qtyIncrease")}">+</button>
                 </div>
                 <div class="cart-item-price">${formatPrice(product.price * i.qty)}</div>
               </div>
-              <button type="button" class="cart-item-remove" aria-label="삭제">
+              <button type="button" class="cart-item-remove" aria-label="${t("cart.remove")}">
                 <svg viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>
               </button>
             </div>`;
         })
         .join("")
-    : `<p class="cart-empty">장바구니가 비어 있습니다.</p>`;
+    : `<p class="cart-empty">${t("cart.empty")}</p>`;
 
   if (subtotalEl) subtotalEl.textContent = formatPrice(getCartSubtotal());
   if (cartCountEl) cartCountEl.textContent = getCartCount();
@@ -202,7 +202,7 @@ function setupNewsletter() {
     e.preventDefault();
     const input = form.querySelector("input");
     if (input.value) {
-      alert("구독해주셔서 감사합니다.");
+      alert(t("footer.newsletterThanks"));
       input.value = "";
     }
   });
@@ -285,4 +285,5 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("DOMContentLoaded", async () => {
   await productsReady;
   setupCartDrawer();
+  onLangChange(renderCartDrawer);
 });

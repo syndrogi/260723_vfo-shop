@@ -10,14 +10,14 @@ function renderProducts() {
   const products = getProducts();
 
   if (getProductsLoadError()) {
-    grid.innerHTML = `<p class="cart-empty">상품을 불러오지 못했습니다.</p>`;
+    grid.innerHTML = `<p class="cart-empty">${t("shop.loadError")}</p>`;
     itemCount.textContent = "";
     return;
   }
 
   if (!products.length) {
-    grid.innerHTML = `<p class="cart-empty">등록된 상품이 없습니다.</p>`;
-    itemCount.textContent = "전체 0개 상품";
+    grid.innerHTML = `<p class="cart-empty">${t("shop.empty")}</p>`;
+    itemCount.textContent = t("shop.itemCount", { count: 0 });
     return;
   }
 
@@ -34,15 +34,15 @@ function renderProducts() {
           </div>
           <div class="product-info">
             <div class="name">${p.name}</div>
-            <div class="colors">${p.color}</div>
-            ${soldOut ? '<div class="sold-out-label">품절</div>' : `<div class="price"><span>${formatPrice(p.price)}</span></div>`}
+            <div class="colors">${p.color || ""}</div>
+            ${soldOut ? `<div class="sold-out-label">${t("product.soldOutLabel")}</div>` : `<div class="price"><span>${formatPrice(p.price)}</span></div>`}
           </div>
         </a>
       `;
     })
     .join("");
 
-  itemCount.textContent = `전체 ${products.length}개 상품`;
+  itemCount.textContent = t("shop.itemCount", { count: products.length });
 }
 
 function sortProducts(order) {
@@ -124,4 +124,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   await productsReady;
   renderProducts();
   setupSort();
+  onLangChange(renderProducts);
 });
