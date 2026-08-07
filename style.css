@@ -92,6 +92,10 @@ svg {
   mask-repeat: no-repeat;
   -webkit-mask-position: center;
   mask-position: center;
+  /* The mark's thin blueprint linework reads lighter than the bold
+     header-text-btn type next to it at this size — a slight blur+
+     contrast pass thickens its edges to match without swapping assets. */
+  filter: blur(0.6px) contrast(2.6);
   transition: background-color 0.18s ease;
 }
 
