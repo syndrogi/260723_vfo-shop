@@ -196,31 +196,60 @@ function applyStaticTranslations() {
   });
 }
 
-function updateLangToggleLabel() {
-  const btn = document.getElementById("langToggle");
-  if (!btn) return;
-  btn.textContent = getLang() === "ko" ? "en" : "ko";
+function updateLangOptions() {
+  document.querySelectorAll(".lang-option").forEach((opt) => {
+    opt.classList.toggle("is-active", opt.dataset.lang === getLang());
+  });
 }
 
 function setLang(lang) {
   localStorage.setItem(LANG_STORAGE_KEY, lang);
   document.documentElement.lang = lang;
   applyStaticTranslations();
-  updateLangToggleLabel();
+  updateLangOptions();
   langChangeListeners.forEach((callback) => callback(lang));
 }
 
-function setupLangToggle() {
-  const btn = document.getElementById("langToggle");
-  if (!btn) return;
-  updateLangToggleLabel();
-  btn.addEventListener("click", () => {
-    setLang(getLang() === "ko" ? "en" : "ko");
+// Globe icon (borrowed from the VELFONT OFFICE main site) opens a small
+// dropdown of language options, reusing the shop's existing .dropdown
+// hover/open styling — see .lang-switch.has-dropdown in the markup.
+function setupLangSwitch() {
+  const switchEl = document.getElementById("langSwitch");
+  const toggle = document.getElementById("langToggle");
+  if (!switchEl || !toggle) return;
+
+  updateLangOptions();
+
+  function closeMenu() {
+    switchEl.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+  }
+
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const isOpen = switchEl.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(isOpen));
+  });
+
+  switchEl.querySelectorAll(".lang-option").forEach((opt) => {
+    opt.addEventListener("click", (e) => {
+      e.preventDefault();
+      setLang(opt.dataset.lang);
+      closeMenu();
+    });
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!switchEl.contains(e.target)) closeMenu();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.lang = getLang();
   applyStaticTranslations();
-  setupLangToggle();
+  setupLangSwitch();
 });

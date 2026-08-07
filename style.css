@@ -165,6 +165,40 @@ svg {
   font-weight: 700;
 }
 
+/* Language switch — the globe icon from the VELFONT OFFICE main site,
+   reusing the shop's own .dropdown styling (border/fade/translateY)
+   instead of introducing a second dropdown look. */
+.lang-switch {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.lang-toggle {
+  display: inline-flex;
+  color: #111;
+  transition: color 0.18s ease;
+}
+
+.lang-toggle svg {
+  width: 19px;
+  height: 19px;
+}
+
+.lang-toggle:hover,
+.lang-switch.open .lang-toggle {
+  color: var(--color-hover);
+}
+
+.lang-menu {
+  left: auto;
+  right: 0;
+}
+
+.lang-option.is-active {
+  font-weight: 700;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;
