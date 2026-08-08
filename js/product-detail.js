@@ -12,7 +12,12 @@ function renderProductDetail(product) {
   document.title = `VELFONT OFFICE — ${product.name}`;
   document.getElementById("breadcrumbName").textContent = product.name;
 
-  const images = product.thumbnail ? [resolveImageUrl(product.thumbnail)] : [];
+  const productImages = getProductImages(product.id);
+  const images = productImages.length
+    ? productImages.map((row) => resolveImageUrl(row.image))
+    : product.thumbnail
+    ? [resolveImageUrl(product.thumbnail)]
+    : [];
 
   const soldOut = product.status === "sold_out";
   const soldOutClass = soldOut ? " sold-out" : "";

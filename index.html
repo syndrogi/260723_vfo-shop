@@ -23,15 +23,6 @@
 
     <nav class="main-nav" id="mainNav">
       <ul>
-        <li class="has-dropdown" id="allNavItem">
-          <button type="button" class="header-text-btn" id="allToggle" aria-expanded="false" aria-controls="allDropdown">All</button>
-          <ul class="dropdown" id="allDropdown">
-            <li><a href="#">Outerwear</a></li>
-            <li><a href="#">Tops</a></li>
-            <li><a href="#">Bottoms</a></li>
-            <li><a href="#">Accessories</a></li>
-          </ul>
-        </li>
         <li><button type="button" class="header-text-btn" id="searchToggle" data-i18n-aria-label="nav.search" aria-label="검색">search</button></li>
       </ul>
     </nav>
@@ -123,24 +114,34 @@
 <main>
   <section class="collection-head">
     <h1>All</h1>
-    <div class="collection-meta">
-      <span class="item-count" id="itemCount">전체 12개 상품</span>
-      <div class="sort-wrap">
-        <label for="sortSelect" data-i18n="collection.sort">정렬</label>
-        <select id="sortSelect">
-          <option value="recommended" data-i18n="sort.recommended">추천순</option>
-          <option value="new" data-i18n="sort.new">신상품순</option>
-          <option value="price-asc" data-i18n="sort.priceAsc">낮은 가격순</option>
-          <option value="price-desc" data-i18n="sort.priceDesc">높은 가격순</option>
-        </select>
-      </div>
-    </div>
+    <span class="item-count" id="itemCount">전체 12개 상품</span>
   </section>
 
-  <section class="product-grid" id="productGrid">
+  <section class="collection-feed" id="productGrid">
     <!-- 상품 카드는 js/shop.js 에서 렌더링됩니다 -->
   </section>
 </main>
+
+<div class="floating-nav" id="floatingNav">
+  <div class="floating-nav-item has-dropdown" id="floatingAllItem">
+    <button type="button" class="floating-nav-btn" id="floatingAllToggle" aria-expanded="false" aria-controls="floatingAllDropdown">All</button>
+    <ul class="dropdown floating-dropdown" id="floatingAllDropdown">
+      <li><a href="#">Outerwear</a></li>
+      <li><a href="#">Tops</a></li>
+      <li><a href="#">Bottoms</a></li>
+      <li><a href="#">Accessories</a></li>
+    </ul>
+  </div>
+  <div class="floating-nav-item has-dropdown" id="floatingSortItem">
+    <button type="button" class="floating-nav-btn" id="floatingSortToggle" aria-expanded="false" aria-controls="floatingSortDropdown" data-i18n="collection.sort">정렬</button>
+    <ul class="dropdown floating-dropdown" id="floatingSortDropdown">
+      <li><a href="#" class="sort-option is-active" data-sort="recommended" data-i18n="sort.recommended">추천순</a></li>
+      <li><a href="#" class="sort-option" data-sort="new" data-i18n="sort.new">신상품순</a></li>
+      <li><a href="#" class="sort-option" data-sort="price-asc" data-i18n="sort.priceAsc">낮은 가격순</a></li>
+      <li><a href="#" class="sort-option" data-sort="price-desc" data-i18n="sort.priceDesc">높은 가격순</a></li>
+    </ul>
+  </div>
+</div>
 
 <footer class="site-footer">
   <div class="footer-col">
@@ -190,6 +191,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/supabase.js"></script>
 <script src="js/products.js"></script>
+<script src="js/archive.js"></script>
 <script src="js/i18n.js"></script>
 <script src="js/common.js"></script>
 <script src="js/shop.js"></script>
